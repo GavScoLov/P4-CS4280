@@ -1,0 +1,79 @@
+Author: Gavin Love
+Project: 4
+Submission Date: May 6th, 2024
+
+Invocation:
+ P4 [file]
+
+---------------
+BNF:
+---------------
+
+ S -> CD			- Read in Int and Allocate Memory, any Number of Additional Operations
+ A -> F AP			- ...
+ AP -> F ?$ | .			- Sum | Int or Identifier
+ B -> . t2 A !			- Assign Value of A to identifier t2
+ C -> t2 *			- Read in Int then allocate memory (v10 for %10) (assign value = int)
+ D -> H ? D | empty		- Recursion
+ E -> ,AAH | ,;FH		- If First A {is greater than} Second A, do H | do H F times
+ F -> t1 | t2			- Number | Identifier
+ G -> B | C | J			- Assignment || Read Int and Allocate Memory || Print Value to Screen
+ H -> E? | G. | empty		- 'if', for || assignment, read int and allocate memory, then print value
+ J -> *" A .			- Print Integer Value to Screen (sum, int, or identifier)
+
+----------------
+TOKENS:
+----------------
+
+ t1 : numbers
+ t2 : identifiers
+ t3 : keywords, operators, and delimiters
+  a) .  : delimiter
+  b) ,  : if {1} greater than {2} then do {3}
+  c) ,; : for {1} # of times, do {2}
+  d) *  : read in integer, allocate memory for new variable, and assign integer value to it
+  e) *" : print value
+  f) ?  : delimiter
+  g) ?$ : addition
+  h) !  : assign {2} to the {1}
+ t4 : comments (#example#)
+
+----------------
+Notes:
+----------------
+
+ - Project will output a message and then will output what is inside of the 'out.asm' file for ease of use
+ - Project was not tested using virtMach it was tested via the online interpreter
+ - Project was tested using filenames: 'P4_test1','P4_test2','P4_test3',etc...
+
+----------------
+Example:
+----------------
+
+ %1 * ,; %1 *" a5 A5 ?$ . . ? ?
+
+----------------
+Output:
+----------------
+
+READ v1 
+LOAD 0
+STORE tempE
+Loop: NOOP
+LOAD v1 
+SUB tempE
+BRZNEG End
+LOAD -5 
+ADD 5 
+STORE tempA
+LOAD tempA
+WRITE tempA
+LOAD tempE
+ADD 1
+STORE tempE
+BR Loop
+End: NOOP
+STOP
+v1  0
+tempE 0
+tempA 0 
